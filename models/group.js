@@ -1,7 +1,21 @@
 module.exports = (sequelize, DataTypes) => {
-  const Guruh = sequelize.define('Guruh', {
-    name: DataTypes.STRING,
-    year: DataTypes.INTEGER
+  const Group = sequelize.define('Group', {
+    group_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   });
-  return Guruh;
+
+  Group.associate = models => {
+    Group.belongsTo(models.Teacher, {
+      foreignKey: 'teacher_id'
+    });
+
+    Group.belongsToMany(models.Student, {
+      through: models.GroupStudent,
+      foreignKey: 'group_id'
+    });
+  };
+
+  return Group;
 };
